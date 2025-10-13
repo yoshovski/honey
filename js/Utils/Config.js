@@ -44,4 +44,9 @@ export default class Config {
 	getServices() {
 		return this.config["services"]
 	}
+
+	// Get admin/gear links from config.json file
+	getGear() {
+		return this.config["gear"] || []
+	}
 }

@@ -10,6 +10,9 @@
 </head>
 <body>
 	<div id="background"></div>
+	<button id="top-gear" title="Settings">
+		<i>settings</i>
+	</button>
 	<div class="main">
 
 		<!-- Home page -->
@@ -39,13 +42,22 @@
 
 		<!-- App list -->
 		<div class="page" p="services">
-			<div class="back"><i></i></div>
 			<div class="wrapper">
 				<div class="header">
 					<i>apps</i>
 					<div class="text">Services</div>
 				</div>
 				<div class="boxes" id="app-list"></div>
+			</div>
+		
+			<details class="wrapper admin-details" id="admin-wrapper">
+					<summary class="header">
+						<i>apps</i>
+						<div class="text">Admin</div>
+						<i class="chev">expand_more</i>
+					</summary>
+				<div class="boxes" id="admin-list"></div>
+			</details>
 			</div>
 		</div>
 

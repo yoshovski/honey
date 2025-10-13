@@ -4,6 +4,41 @@
 	flex-wrap: wrap;
 }
 
+#admin-list {
+	max-height: 0;
+	overflow: hidden;
+	transition: max-height .32s ease;
+}
+
+
+.admin-details[open] #admin-list {
+    max-height: 800px;
+}
+
+.header-toggle { cursor: pointer; }
+.header-toggle .chev {
+	margin-left: auto;
+	font-size: 20px;
+	opacity: .8;
+}
+.header-toggle.open .chev { transform: rotate(180deg); }
+
+.page[p="services"] .wrapper:first-of-type { --wrapper-top: 12px; }
+
+.admin-details {
+	padding: 0;
+}
+.admin-details summary {
+	list-style: none;
+	appearance: none;
+	-webkit-appearance: none;
+	display: flex;
+	align-items: center;
+	margin: 20px 20px 16px;
+	cursor: pointer;
+}
+.admin-details[open] .chev { transform: rotate(180deg); }
+
 .box {
 	min-width: 292px;
 	flex: 1;

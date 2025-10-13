@@ -14,34 +14,16 @@
 	},
 	"services": [
 		{
-			"name": "CalDav",
-			"desc": "Simple CalDav server for calendar sync between various devices.",
-			"href": "caldav",
-			"icon": "img/preview/caldav.png"
-		},
-		{
 			"name": "Files",
 			"desc": "Fancy file manager for the web.",
 			"href": "files",
-			"icon": "img/preview/files.png"
+			"icon": "img/preview/drive.png"
 		},
 		{
 			"name": "Gallery",
 			"desc": "Photo & video gallery syncable with multiple Android devices.",
 			"href": "gallery",
 			"icon": "img/preview/gallery.png"
-		},
-		{
-			"name": "Git",
-			"desc": "Self-hosted, painless, secure place for your repositories.",
-			"href": "git",
-			"icon": "img/preview/git.png"
-		},
-		{
-			"name": "E-Mail",
-			"desc": "Feature-rich, decentralized and secure E-Mail server.",
-			"href": "mail",
-			"icon": "img/preview/mail.png"
 		},
 		{
 			"name": "Music",
@@ -53,13 +35,21 @@
 			"name": "Notes",
 			"desc": "Sweet & lightweight app for taking notes.",
 			"href": "notes",
-			"icon": "img/preview/notes.png"
+			"icon": "img/preview/vault.png"
+		}
+	],
+	"gear": [
+		{
+			"name": "CalDav",
+			"desc": "Simple CalDav server for calendar sync between various devices.",
+			"href": "caldav",
+			"icon": "img/preview/caldav.png"
 		},
 		{
-			"name": "Google",
-			"desc": "DON'T CLICK: goes to google.com",
-			"href": "https://google.com",
-			"icon": "img/preview/google.png"
+			"name": "E-Mail",
+			"desc": "Feature-rich, decentralized and secure E-Mail server.",
+			"href": "mail",
+			"icon": "img/preview/mail.png"
 		}
 	]
 }
