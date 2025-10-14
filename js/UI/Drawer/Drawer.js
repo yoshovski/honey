@@ -10,6 +10,10 @@ export default class Drawer {
 
 	init() {
 		this.importApps()
+        
+		window.addEventListener('langchange', () => {
+			this.importApps()
+		})
 	}
 
 	importApps() {
@@ -23,12 +27,20 @@ export default class Drawer {
 			a.classList.add("box")
 			a.href = app.href
 			if (openNewTab) a.setAttribute("target", "_blank")
+			let lang = (window.localStorage && localStorage.getItem('lang')) || navigator.language.split('-')[0]
+			let desc = app.desc
+			let name = app.name
+			if (lang === 'it') {
+				if (app.desc_it) desc = app.desc_it
+				if (app.name_it) name = app.name_it
+			}
+
 			a.innerHTML = `
-				<img src="${app.icon}">
-				<div>
-					<div class="name">${app.name}</div>
-					<div class="desc">${app.desc}</div>
-				</div>`
+					<img src="${app.icon}">
+					<div>
+						<div class="name">${name}</div>
+						<div class="desc">${desc}</div>
+					</div>`
 
 			if (enablePingDots) {
 				a.classList.add("pingdot")

@@ -1,0 +1,62 @@
+{
+  "ui": {
+    "theme": "Theme",
+    "services": "Services",
+    "more": "More",
+  "overview_label": "Overview",
+    "settings_label": "Settings",
+    "admin": "Admin",
+    "warning_no_cookies": "WARNING: due to blocked cookies, all settings will be lost after page reload",
+    "topgear_open_settings": "Open settings",
+    "topgear_back_services": "Back to services",
+    "lang_label": "Language",
+    "settings": {
+      "dark_mode": "Dark mode",
+      "dark_mode_desc": "Make the colors more appropriate for low-light environments",
+      "open_in_new": "Open in new tab",
+      "open_in_new_desc": "Clicking on application will open it in a new browser tab",
+      "ping_dots": "Ping dots",
+      "ping_dots_desc": "Shows small dots before titles indicating whether service is up or not",
+      "blur_on": "Enable blur",
+      "blur_on_desc": "Improves UI sweetness but may have a huge impact on performance",
+      "animations": "Animations",
+      "animations_desc": "Show nice and fancy page transitions for improved experience",
+      "opt_auto": "Auto",
+      "opt_off": "Off",
+      "opt_on": "On"
+    }
+    ,
+    "overview": {
+      "available": "{n} Available service{plural}",
+      "encryption": {
+        "full": {
+          "title": "Full encryption",
+          "desc": "All services use secure connections (HTTPS)."
+        },
+        "none": {
+          "title": "No encryption",
+          "desc": "It seems server does not support HTTPS."
+        },
+        "partial": {
+          "title": "Partial encryption",
+          "desc": "{n} service{plural} do not use secure connections."
+        }
+      },
+      "independence": {
+        "full": {
+          "title": "Independence",
+          "desc": "This server is free of 3rd party services."
+        },
+        "none": {
+          "title": "Something is wrong...",
+          "desc": "It seems only 3rd-party services are listed."
+        },
+        "partial": {
+          "title": "Partial independence",
+          "desc": "{n} service{plural} provided by 3rd-parties."
+        }
+      }
+    }
+  }
+}
+

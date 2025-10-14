@@ -16,32 +16,37 @@ export default class Settings {
 
 	initSettings() {
 		let darkMode = addOptionsTile(this.config,
-			"dark_mode", "Dark mode",
-			"Make the colors more appropriate for low-light environments",
+			"dark_mode",
+			"ui.settings.dark_mode",
+			"ui.settings.dark_mode_desc",
 			"dark_mode", EVENTS.onThemeChange
 		)
 
 		addOnOffTile(this.config,
-			"open_in_new", "Open in new tab",
-			"Clicking on application will open it in a new browser tab",
+			"open_in_new",
+			"ui.settings.open_in_new",
+			"ui.settings.open_in_new_desc",
 			"open_new_tab", EVENTS.onNewTabChange
 		)
 
 		addOnOffTile(this.config,
-			"sensors", "Ping dots",
-			"Shows small dots before titles indicating whether service is up or not",
+			"sensors",
+			"ui.settings.ping_dots",
+			"ui.settings.ping_dots_desc",
 			"ping_dots", EVENTS.onPingDotsChange
 		)
 
 		addOnOffTile(this.config,
-			"blur_on", "Enable blur",
-			"Improves UI sweetness but may have a huge impact on performance",
+			"blur_on",
+			"ui.settings.blur_on",
+			"ui.settings.blur_on_desc",
 			"blur", EVENTS.onBlurChange
 		)
 
 		addOnOffTile(this.config,
-			"animation", "Animations",
-			"Show nice and fancy page transitions for improved experience",
+			"animation",
+			"ui.settings.animations",
+			"ui.settings.animations_desc",
 			"animations", EVENTS.onAnimationChange
 		)
 

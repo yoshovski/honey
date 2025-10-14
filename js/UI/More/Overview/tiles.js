@@ -8,10 +8,10 @@ export function privacyBox(icon, color, name, desc, pp) {
 	item.setAttribute("style", `--color: ${color}`)
 
 	item.innerHTML = `<i>${icon}</i>
-		<div>
-			<div class="title">${name}</div>
-			<div class="subtitle">${desc}</div>
-		</div>`
+		 <div>
+            <div class="title">${(window.i18n && typeof window.i18n.t === 'function') ? window.i18n.t(name) : name}</div>
+            <div class="subtitle">${(window.i18n && typeof window.i18n.t === 'function') ? window.i18n.t(desc) : desc}</div>
+        </div>`
 
 	document.querySelector(".privacy-boxes").appendChild(item)
 	return item

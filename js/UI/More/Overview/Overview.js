@@ -28,37 +28,43 @@ export default class Overview {
 			stats.thirdParties += analysis.isThirdParty
 		}
 		this.div.querySelector(".big").setAttribute("style", `--value: ${stats.total}`)
-		this.div.querySelector(".small").innerText = `Available service${s(stats.total)}`
+		const availableLabel = (window.i18n && typeof window.i18n.t === 'function') ? window.i18n.t('ui.overview.available') : `Available service${s(stats.total)}`
+		const tr = (key, fallback) => {
+			if (!(window.i18n && typeof window.i18n.t === 'function')) return fallback
+			const v = window.i18n.t(key)
+			return (v === key) ? fallback : v
+		}
+		this.div.querySelector(".small").innerText = tr('ui.overview.available', `Available service${s(stats.total)}`).replace('{n}', stats.total).replace('{plural}', s(stats.total))
 
 		let encryption_t, encryption_d
 		if (stats.secure == stats.total) {
-			encryption_t = "Full encryption"
-			encryption_d = "All services use secure connections (HTTPS)."
+			encryption_t = tr('ui.overview.encryption.full.title', "Full encryption")
+			encryption_d = tr('ui.overview.encryption.full.desc', "All services use secure connections (HTTPS).")
 		}
 		else if (stats.secure == 0) {
-			encryption_t = "No encryption"
-			encryption_d = "It seems server does not support HTTPS."
+			encryption_t = tr('ui.overview.encryption.none.title', "No encryption")
+			encryption_d = tr('ui.overview.encryption.none.desc', "It seems server does not support HTTPS.")
 
 		}
 		else {
 			let insecure = stats.total - stats.secure
-			encryption_t = "Partial encryption"
-			encryption_d = `${insecure} service${s(insecure)} do not use secure connections.`
+			encryption_t = tr('ui.overview.encryption.partial.title', "Partial encryption")
+			encryption_d = tr('ui.overview.encryption.partial.desc', `${insecure} service${s(insecure)} do not use secure connections.`).replace('{n}', insecure).replace('{plural}', s(insecure))
 
 		}
 
 		let indepencence_t, indepencence_d
 		if (stats.thirdParties == 0) {
-			indepencence_t = "Independence"
-			indepencence_d = "This server is free of 3rd party services."
+			indepencence_t = tr('ui.overview.independence.full.title', "Independence")
+			indepencence_d = tr('ui.overview.independence.full.desc', "This server is free of 3rd party services.")
 		}
 		else if (stats.thirdParties == stats.total) {
-			indepencence_t = "Something is wrong..."
-			indepencence_d = "It seems only 3rd-party services are listed."
+			indepencence_t = tr('ui.overview.independence.none.title', "Something is wrong...")
+			indepencence_d = tr('ui.overview.independence.none.desc', "It seems only 3rd-party services are listed.")
 		}
 		else {
-			indepencence_t = "Partial independence"
-			indepencence_d = `${stats.thirdParties} service${s(stats.thirdParties)} ${isare(stats.thirdParties)} provided by 3rd-parties.`
+			indepencence_t = tr('ui.overview.independence.partial.title', "Partial independence")
+			indepencence_d = tr('ui.overview.independence.partial.desc', `${stats.thirdParties} service${s(stats.thirdParties)} ${isare(stats.thirdParties)} provided by 3rd-parties.`).replace('{n}', stats.thirdParties).replace('{plural}', s(stats.thirdParties))
 		}
 
 		privacyBox("lock", "#0D6", encryption_t, encryption_d, stats.secure / stats.total)

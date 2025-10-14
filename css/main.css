@@ -47,3 +47,55 @@ body {
 }
 
 #top-gear i { font-size: 18px; }
+
+#top-controls {
+	position: fixed;
+	top: 12px;
+	right: 12px;
+	display: flex;
+	gap: 8px;
+	align-items: center;
+	z-index: 9999;
+}
+
+#lang-select {
+	background: rgba(255,255,255,0.03);
+	color: var(--color);
+	border: 1px solid rgba(255,255,255,0.06);
+	padding: 6px 10px;
+	border-radius: 999px;
+	cursor: pointer;
+	font-weight: 600;
+	font-size: 13px;
+	-webkit-appearance: none;
+	appearance: none;
+	white-space: nowrap;
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+}
+
+#lang-select:hover { background: rgba(255,255,255,0.05); }
+#lang-select:focus { outline: none; box-shadow: 0 0 0 3px rgba(100,100,255,0.06); }
+
+#top-controls select::-ms-expand { display: none; }
+
+#top-controls #top-gear {
+	position: relative;
+	top: auto;
+	right: auto;
+	width: 40px;
+	height: 40px;
+	border-radius: 10px;
+	background: transparent;
+	border: none;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	cursor: pointer;
+	z-index: 2;
+	color: var(--color);
+}
+
+#top-controls #top-gear:hover { background: rgba(255,255,255,0.04); }
+#top-controls #top-gear i { font-size: 18px; }

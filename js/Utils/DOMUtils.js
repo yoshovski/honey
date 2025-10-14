@@ -14,9 +14,11 @@ export function showPage(target) {
 	if (top) {
 		if (target == 'more') {
 			top.innerHTML = '<i>home</i>'
+			top.title = (window.i18n && window.i18n.t('ui.topgear_back_services')) || 'Back'
 			top.onclick = () => showPage('services')
 		} else {
 			top.innerHTML = '<i>settings</i>'
+			top.title = (window.i18n && window.i18n.t('ui.topgear_open_settings')) || 'Settings'
 			top.onclick = () => showPage('more')
 		}
 	}

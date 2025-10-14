@@ -10,9 +10,15 @@
 </head>
 <body>
 	<div id="background"></div>
-	<button id="top-gear" title="Settings">
-		<i>settings</i>
-	</button>
+	<div id="top-controls">
+		<select id="lang-select" aria-label="Language selector">
+			<option value="en">🇬🇧 English</option>
+			<option value="it">🇮🇹 Italiano</option>
+		</select>
+		<button id="top-gear" title="Settings">
+			<i>settings</i>
+		</button>
+	</div>
 	<div class="main">
 
 		<!-- Home page -->
@@ -26,15 +32,15 @@
 				<div class="buttons">
 					<div id="theme-switcher">
 						<i>&nbsp;</i>
-						<div class="text">Theme</div>
+						<div class="text" data-i18n="ui.theme">Theme</div>
 					</div>
 					<div t="services">
 						<i>apps</i>
-						<div class="text">Services</div>
+						<div class="text" data-i18n="ui.services">Services</div>
 					</div>
 					<div t="more">
 						<i>more</i>
-						<div class="text">More</div>
+						<div class="text" data-i18n="ui.more">More</div>
 					</div>
 				</div>
 			</div>
@@ -45,7 +51,7 @@
 			<div class="wrapper">
 				<div class="header">
 					<i>apps</i>
-					<div class="text">Services</div>
+					<div class="text" data-i18n="ui.services">Services</div>
 				</div>
 				<div class="boxes" id="app-list"></div>
 			</div>
@@ -53,7 +59,7 @@
 			<details class="wrapper admin-details" id="admin-wrapper">
 					<summary class="header">
 						<i>apps</i>
-						<div class="text">Admin</div>
+						<div class="text" data-i18n="ui.admin">Admin</div>
 						<i class="chev">expand_more</i>
 					</summary>
 				<div class="boxes" id="admin-list"></div>
@@ -66,8 +72,8 @@
 			<div class="back"><i></i></div>
 			<div class="wrapper">
 				<div class="subswitch">
-					<div>Overview</div>
-					<div>Settings</div>
+					<div data-i18n="ui.overview_label">Overview</div>
+					<div data-i18n="ui.settings_label">Settings</div>
 				</div>
 				<div class="subpages">
 
@@ -85,7 +91,7 @@
 
 					<!-- Settings -->
 					<div>
-						<div id="no-cookies">WARNING: due to blocked cookies, all settings will be lost after page reload</div>
+						<div id="no-cookies" data-i18n="ui.warning_no_cookies">WARNING: due to blocked cookies, all settings will be lost after page reload</div>
 						<div id="settings"></div>
 					</div>
 				</div>

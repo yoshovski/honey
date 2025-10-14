@@ -1,0 +1,61 @@
+{
+  "ui": {
+    "theme": "Tema",
+    "services": "Servizi",
+    "more": "Altro",
+  "overview_label": "Panoramica",
+    "settings_label": "Impostazioni",
+    "admin": "Admin",
+    "warning_no_cookies": "ATTENZIONE: a causa dei cookie bloccati, tutte le impostazioni andranno perse al ricaricamento della pagina",
+    "topgear_open_settings": "Apri impostazioni",
+    "topgear_back_services": "Torna ai servizi",
+    "lang_label": "Lingua",
+    "settings": {
+      "dark_mode": "Tema scuro",
+      "dark_mode_desc": "Rende i colori più adatti in ambienti con scarsa illuminazione",
+      "open_in_new": "Apri in una nuova scheda",
+      "open_in_new_desc": "Cliccando su un'applicazione si aprirà in una nuova scheda del browser",
+      "ping_dots": "Indicatori ping",
+      "ping_dots_desc": "Mostra piccoli punti prima del titolo che indicano se il servizio è attivo",
+      "blur_on": "Abilita sfocatura",
+      "blur_on_desc": "Migliora l'aspetto ma può avere un grande impatto sulle prestazioni",
+      "animations": "Animazioni",
+      "animations_desc": "Mostra transizioni di pagina piacevoli per una migliore esperienza",
+      "opt_auto": "Auto",
+      "opt_off": "Off",
+      "opt_on": "On"
+    ,
+    "overview": {
+      "available": "{n} servizio disponibile{plural}",
+      "encryption": {
+        "full": {
+          "title": "Crittografia completa",
+          "desc": "Tutti i servizi usano connessioni sicure (HTTPS)."
+        },
+        "none": {
+          "title": "Nessuna crittografia",
+          "desc": "Sembra che il server non supporti HTTPS."
+        },
+        "partial": {
+          "title": "Crittografia parziale",
+          "desc": "{n} servizio{plural} non usa connessioni sicure."
+        }
+      },
+      "independence": {
+        "full": {
+          "title": "Indipendenza",
+          "desc": "Questo server è privo di servizi di terze parti."
+        },
+        "none": {
+          "title": "C'è qualcosa che non va...",
+          "desc": "Sembra che siano elencati solo servizi di terze parti."
+        },
+        "partial": {
+          "title": "Indipendenza parziale",
+          "desc": "{n} servizio{plural} fornito da terze parti."
+        }
+      }
+    }
+  }
+}
+}
