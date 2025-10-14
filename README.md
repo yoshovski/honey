@@ -4,10 +4,9 @@ A lightweight dashboard for self-hosted services — pure HTML/CSS/JS, client-si
 
 This repository is a fork of dani3l0/honey and incorporates changes from yoshovski (v2.4.1-yoshovski1) plus additional improvements for a more admin-friendly, internationalized experience.
 
-<div style="border:1px solid #141992ff;padding:12px;border-radius:6px;background:#141992ff">
-<strong>Note:</strong> This is a modified version of the original <em>honey</em> project by <code>dani3l0</code>. If you prefer the unmodified original, visit the upstream repository: <a href="https://github.com/dani3l0/honey">https://github.com/dani3l0/honey</a>
-</div>
-<br>
+
+> **Note:** This is a modified version of the original *honey* project by `dani3l0`. If you want the original, see https://github.com/dani3l0/honey
+
 
 honey is written in **pure** `HTML` `CSS` `JS` so dynamic backend or special webserver configuration is not required.
 It works out-of-the-box as all operations are done client-side.
