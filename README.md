@@ -1,20 +1,34 @@
-# honey
+# honey (fork)
 
-_A sweet dashboard I use on my homeserver with some self-hosted stuff..._
+A lightweight dashboard for self-hosted services — pure HTML/CSS/JS, client-side only.
+
+This repository is a fork of dani3l0/honey and incorporates changes from yoshovski (v2.4.1-yoshovski1) plus additional improvements for a more admin-friendly, internationalized experience.
+
+<div style="border:1px solid #141992ff;padding:12px;border-radius:6px;background:#141992ff">
+<strong>Note:</strong> This is a modified version of the original <em>honey</em> project by <code>dani3l0</code>. If you prefer the unmodified original, visit the upstream repository: <a href="https://github.com/dani3l0/honey">https://github.com/dani3l0/honey</a>
+</div>
+<br>
 
 honey is written in **pure** `HTML` `CSS` `JS` so dynamic backend or special webserver configuration is not required.
 It works out-of-the-box as all operations are done client-side.
 
-<font size="4">**[📺 Live demo](https://honeyy.vercel.app/)**</font>
 
-<img src="screenshot.jpg" style="width: 720px">
+### Screenshots
+#### Main Page
+<img src="https://private-user-images.githubusercontent.com/29847122/500722357-2c55188d-ab61-4bc6-88a5-f264a295b64a.png?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NjA0MTEzMTcsIm5iZiI6MTc2MDQxMTAxNywicGF0aCI6Ii8yOTg0NzEyMi81MDA3MjIzNTctMmM1NTE4OGQtYWI2MS00YmM2LTg4YTUtZjI2NGEyOTViNjRhLnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTEwMTQlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUxMDE0VDAzMDMzN1omWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPWYwYTAzMThmNzliMmExZmZhNGFiM2Y3NTBmYTA0ZDZlMWQ5N2FmZDNkMjJlMzJhOGY0NTRiNDdmYjcyZjAwOWUmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.ZPpd5WWfFZNyucgDnYYyirlOd5QorGdPMg_MFHQuDW8" style="width: 720px">
+
+
+#### Language switch
+
+<img src="https://private-user-images.githubusercontent.com/29847122/500722952-3d1ec3a9-56e6-47a3-b7bd-88aaa58171a3.png?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NjA0MTEzMTcsIm5iZiI6MTc2MDQxMTAxNywicGF0aCI6Ii8yOTg0NzEyMi81MDA3MjI5NTItM2QxZWMzYTktNTZlNi00N2EzLWI3YmQtODhhYWE1ODE3MWEzLnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTEwMTQlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUxMDE0VDAzMDMzN1omWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTMxM2M4ZjRmOTRiMzFlMDdlNTA2OTQ3NzAzNjY1MDMyNzlkNGIzOTZmZWI3MWY1ZmE0M2NiMWExYjcxNjg1OGYmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.muLC-TOfp-lcKxUu2x321HbaUzdKqvOb8OncHxKHDuw" style="width: 150px">
+
 
 
 ## 🚀 Installation
 
 ### 🕸️ On existing webserver
 
-1. Download latest prebuilt archive from **[Releases](https://github.com/dani3l0/honey/releases)**.
+1. Download latest prebuilt archive from **[Releases](https://github.com/yoshovski/honey/releases)**.
 
 2. Extract downloaded archive to your webserver root.
 
@@ -24,7 +38,7 @@ It works out-of-the-box as all operations are done client-side.
 ### 🐋 via Docker
 
 ```
-docker run -p 4173:4173 -v /path/to/config:/app/dist/config ghcr.io/dani3l0/honey:latest
+docker run -p 4173:4173 -v /path/to/config:/app/dist/config ghcr.io/yoshovski/honey:latest
 ```
 
 - `-p 4173:4173` - exposes HTTP port to your machine
@@ -38,7 +52,19 @@ _alternatively, use a `docker-compose.yml` file_
 
 ## ⚙️ Configuration
 
-Configuration file is located at `config/config.json`.
+Base configuration file is located at `config/config.json`.
+
+## 🌐 Internationalization / Language switch
+
+For now the language switch supports English and Italian. To enable it you must add two .json files into the public config folder:
+
+- /public/config/config.en.json
+- /public/config/config.it.json
+
+**Important**:
+- The json files must follow the same top-level structure as your existing `config/config.json` (same keys: `ui`, `services`, `gear`, etc.)
+- Recommended workflow: copy `public/config/config.json` (or `config/config.json`) to `public/config/config.en.json` and `public/config/config.it.json`, then translate only the user-facing strings (for example a `strings` object or the `ui` fields) while keeping the rest identical
+- Place images referenced by those locale files under `/public/config` (or use valid public URLs) and update paths accordingly
 
 
 ### 📱 Tweaking the user interface
@@ -93,7 +119,7 @@ How to prepare a development environment:
 
 ```
 # Download the source code
-git clone https://github.com/dani3l0/honey && cd honey
+git clone https://github.com/yoshovski/honey && cd honey
 
 # Install required modules
 npm i
@@ -119,6 +145,8 @@ npm run build
 
 
 ## 🤝 Credits
+
+The author dani3l0 of the original repository: https://github.com/dani3l0/honey
 
 Of course, some third-party resources are used in this project. I kanged them for self-hosting, easier development and to avoid compatibility issues.
 
