@@ -12,6 +12,16 @@
 		"animations": true,
 		"trusted_domains": []
 	},
+	"auth": {
+		"admin_roles": [
+			"admin"
+		]
+	},
+	"jarvis": {
+		"roles": [
+			"admin"
+		]
+	},
 	"services": [
 		{
 			"name": "Files",

@@ -8,11 +8,11 @@ COPY . .
 RUN npm install
 RUN npm run build
 
-# Run a built-in webserver
+# Run honey's server (static files, sign-in roles, Jarvis proxy)
 CMD ["/app/entrypoint.sh"]
 
 # Expose port
 EXPOSE 4173
 
 # Health check
-HEALTHCHECK CMD wget -nv --spider --tries=1 http://127.0.0.1:4173
+HEALTHCHECK CMD wget -nv --spider --tries=1 http://127.0.0.1:4173/healthz

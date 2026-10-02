@@ -1,5 +1,6 @@
 import App from "./App"
 import I18n from "./Utils/I18n"
+import { initUser, loadJarvis } from "./UI/User/User"
 
 window.addEventListener("DOMContentLoaded", async () => {
 	window.i18n = new I18n()
@@ -34,6 +35,8 @@ window.addEventListener("DOMContentLoaded", async () => {
 
 	const boot = async () => {
 		let cfg = await loadConfigForLang(window.i18n.lang || 'en')
+		initUser(cfg)
+		loadJarvis(cfg)
 		if (window.app) {
 			if (window.app.config && typeof window.app.config === 'object') {
 				window.app.config.config = cfg
