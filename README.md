@@ -110,6 +110,47 @@ Example:
 ```
 
 
+## 🔐 Sign-in, roles and the Jarvis widget
+
+honey ships a small Node server (`server.mjs`, no dependencies) instead of `vite preview`. Without any setting it
+behaves like before: everything visible, no sign-in. With Zitadel (or any OIDC provider) in front it shows each
+person only what their roles allow.
+
+**How it works:** oauth2-proxy signs people in with Zitadel and passes the ID token on (`--pass-authorization-header`).
+The honey server checks the token's signature against the issuer's keys, reads the roles
+(`urn:zitadel:iam:org:project:roles`) and filters the config **on the server**: someone without a role never even
+receives those links. Example stack: [`docker-compose.zitadel.yaml`](docker-compose.zitadel.yaml).
+
+**Config keys** (in every `config/config.*.json`):
+
+| Key | What |
+|---|---|
+| `services[].roles`, `gear[].roles` | who sees that link, e.g. `["admin", "family"]`; no `roles` = everyone signed in |
+| `auth.admin_roles` | who sees the Admin section at all (default `["admin"]`) |
+| `jarvis.roles` | who gets the Jarvis chat widget (default `["admin"]`) |
+
+**Server environment:**
+
+| Variable | What |
+|---|---|
+| `OIDC_ISSUER`, `OIDC_CLIENT_ID` | the issuer (`https://auth.yoshovski.com`) and the app's client ID (the token's audience) |
+| `OIDC_ROLES_CLAIM` | claim with the roles (default Zitadel's `urn:zitadel:iam:org:project:roles`) |
+| `PUBLIC_URL` | `https://cloud.yoshovski.com`: "Sign out" also ends the Zitadel session and comes back here |
+| `JARVIS_API_URL`, `JARVIS_API_TOKEN` | Jarvis Core (`http://100.88.90.8:8091` over Tailscale) and its `CORE_TOKEN_WIDGET`; `/jarvis-api/*` is forwarded to Core `/widget/*` with the signed-in person's email, name and roles. Without them the widget stays off |
+| `HONEY_DEV_USER` | local testing without OIDC: `"Name <mail>\|admin,family"` |
+
+**Zitadel setup (once):**
+1. Project (e.g. *Home*): roles `admin` and `family`; tick **Assert roles on authentication** and **Check authorization on
+   authentication** (people without a role can't sign in).
+2. New application *honey* → Web → **Code** (client secret). Redirect URI `https://cloud.yoshovski.com/oauth2/callback`,
+   post-logout URI `https://cloud.yoshovski.com/`. Token settings: **User roles inside ID token**, **User info inside ID
+   token**, grant type **Refresh token**. Client ID + secret go into the stack's `.env`.
+3. Authorizations: yourself `admin`, family members `family`.
+4. Nginx Proxy Manager: the `cloud.yoshovski.com` proxy host forwards to `oauth2-proxy` port `4180`; remove its access
+   list (basic auth). Advanced: `client_max_body_size 6m;` (voice recordings).
+
+`npm test` runs the server tests (token check, roles, filtering).
+
 ## 🛠️ Development
 
 honey is built on top of [Vite.js](https://vitejs.dev/). This tool allows faster development and offers various optimizations.

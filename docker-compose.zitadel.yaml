@@ -1,0 +1,58 @@
+# honey behind Zitadel sign-in, with the Jarvis widget (cloud.yoshovski.com on pi5).
+#
+#   browser → Cloudflare → Nginx Proxy Manager → oauth2-proxy (Zitadel login) → honey → Jarvis Core (Tailscale)
+#
+# NPM's proxy host forwards to oauth2-proxy:4180 (no access list any more). honey has no published port, so only
+# oauth2-proxy reaches it, and honey still checks the ID token's signature itself.
+# .env next to this file: ZITADEL_CLIENT_ID, ZITADEL_CLIENT_SECRET, OAUTH2_COOKIE_SECRET, JARVIS_API_TOKEN.
+#   OAUTH2_COOKIE_SECRET: openssl rand -base64 32 | tr -- '+/' '-_'
+services:
+  honey:
+    image: ghcr.io/yoshovski/honey:latest
+    container_name: honey
+    restart: unless-stopped
+    volumes:
+      - ./config:/app/dist/config
+    environment:
+      OIDC_ISSUER: https://auth.yoshovski.com
+      OIDC_CLIENT_ID: ${ZITADEL_CLIENT_ID}
+      PUBLIC_URL: https://cloud.yoshovski.com
+      JARVIS_API_URL: http://100.88.90.8:8091        # Jarvis Core on vps-prod, over Tailscale
+      JARVIS_API_TOKEN: ${JARVIS_API_TOKEN}           # Core's CORE_TOKEN_WIDGET
+    networks: [dashboard]
+    mem_limit: 128m
+
+  oauth2-proxy:
+    image: quay.io/oauth2-proxy/oauth2-proxy:v7.12.0
+    container_name: oauth2-proxy
+    restart: unless-stopped
+    environment:
+      OAUTH2_PROXY_PROVIDER: oidc
+      OAUTH2_PROXY_PROVIDER_DISPLAY_NAME: Zitadel
+      OAUTH2_PROXY_OIDC_ISSUER_URL: https://auth.yoshovski.com
+      OAUTH2_PROXY_CLIENT_ID: ${ZITADEL_CLIENT_ID}
+      OAUTH2_PROXY_CLIENT_SECRET: ${ZITADEL_CLIENT_SECRET}
+      OAUTH2_PROXY_CODE_CHALLENGE_METHOD: S256
+      OAUTH2_PROXY_SCOPE: openid email profile offline_access urn:zitadel:iam:org:projects:roles
+      OAUTH2_PROXY_REDIRECT_URL: https://cloud.yoshovski.com/oauth2/callback
+      OAUTH2_PROXY_EMAIL_DOMAINS: "*"                  # who may sign in is decided in Zitadel (project roles)
+      OAUTH2_PROXY_UPSTREAMS: http://honey:4173/
+      OAUTH2_PROXY_HTTP_ADDRESS: 0.0.0.0:4180
+      OAUTH2_PROXY_REVERSE_PROXY: "true"
+      OAUTH2_PROXY_SKIP_PROVIDER_BUTTON: "true"
+      OAUTH2_PROXY_PASS_AUTHORIZATION_HEADER: "true"   # the ID token → honey (roles, name)
+      OAUTH2_PROXY_API_ROUTES: ^/jarvis-api/           # an expired session answers 401 there, not a login redirect
+      OAUTH2_PROXY_WHITELIST_DOMAINS: auth.yoshovski.com   # sign-out goes on to Zitadel's end_session
+      OAUTH2_PROXY_COOKIE_SECRET: ${OAUTH2_COOKIE_SECRET}
+      OAUTH2_PROXY_COOKIE_NAME: _cloud_session
+      OAUTH2_PROXY_COOKIE_DOMAINS: cloud.yoshovski.com
+      OAUTH2_PROXY_COOKIE_SECURE: "true"
+      OAUTH2_PROXY_COOKIE_EXPIRE: 168h
+      OAUTH2_PROXY_COOKIE_REFRESH: 1h
+      OAUTH2_PROXY_FLUSH_INTERVAL: 100ms               # Jarvis answers stream (SSE)
+    depends_on: [honey]
+    networks: [dashboard]
+    mem_limit: 64m
+
+networks:
+  dashboard:
