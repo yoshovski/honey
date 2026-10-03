@@ -197,3 +197,15 @@ Of course, some third-party resources are used in this project. I kanged them fo
 - **honey icon** - random icon found in DuckDuckGo Images
 
 - **Wallpapers** - very nice background images kanged from [wallhaven](https://wallhaven.cc/)
+
+### Jarvis streaming voice
+
+Honey's `/jarvis-api/voice?conversation_id=<id>` upgrades to Core `/widget/voice` and the internal Jarvis Voice
+service. The proxy reuses verified Zitadel identity/role checks, replaces all Jarvis headers, and requires a matching
+browser Origin (`PUBLIC_URL`, or the Host header when unset). `voice-worklet.js` is also allowed through the HTTP
+proxy. Keep NPM WebSockets enabled. No additional Honey secret or published port is needed.
+
+After merging the companion streaming-voice change, Stefan must publish a Honey release tag (following the current
+`v2.4.1-yoshovski…` tag series), then pull/redeploy `honey-yoshovski` on pi5. Jarvis Core/Voice needs its own release
+and provider configuration; Honey merging alone does not enable streaming. The widget falls back to HTTP voice
+when the Voice service is unavailable.
