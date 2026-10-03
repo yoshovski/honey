@@ -32,7 +32,7 @@ const ROLES_CLAIM = env.OIDC_ROLES_CLAIM || 'urn:zitadel:iam:org:project:roles'
 const PUBLIC_URL = (env.PUBLIC_URL || '').replace(/\/+$/, '')
 const JARVIS_URL = (env.JARVIS_API_URL || '').replace(/\/+$/, '')
 const JARVIS_TOKEN = env.JARVIS_API_TOKEN || ''
-const JARVIS_PATHS = new Set(['me', 'overview', 'ask', 'decide', 'stt', 'tts', 'jarvis-widget.js'])
+const JARVIS_PATHS = new Set(['me', 'overview', 'ask', 'decide', 'stt', 'tts', 'voice', 'voice-worklet.js', 'jarvis-widget.js'])
 const MAX_BODY = 6 * 1024 * 1024
 const TYPES = {
 	'.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.css': 'text/css; charset=utf-8',
@@ -199,6 +199,59 @@ async function proxyJarvis(req, res, path, user) {
 	req.pipe(up)
 }
 
+
+/** Upgrade only the widget voice route. Authenticate again; never trust caller-supplied Jarvis headers. */
+export function voiceUpgrade({ userResolver = userOf, rolesResolver = jarvisRoles,
+	jarvisUrl = JARVIS_URL, jarvisToken = JARVIS_TOKEN, publicUrl = PUBLIC_URL } = {}) {
+	return async (req, socket, head) => {
+		const reject = (code) => { socket.end(`HTTP/1.1 ${code} Rejected\r\nConnection: close\r\nContent-Length: 0\r\n\r\n`) }
+		let upstream, peer
+		const cleanup = () => { upstream?.destroy(); peer?.destroy(); socket.destroy() }
+		socket.on('error', cleanup)
+		socket.once('close', () => { upstream?.destroy(); peer?.destroy() })
+		try {
+			const url = new URL(req.url, 'http://honey')
+			if (url.pathname !== '/jarvis-api/voice' || req.method !== 'GET' || String(req.headers.upgrade).toLowerCase() !== 'websocket') return reject(404)
+			if (!jarvisUrl || !jarvisToken) return reject(404)
+			// Cookies authenticate WebSockets: Origin must match the dashboard to block cross-site calls.
+			const origin = new URL(req.headers.origin || 'invalid:')
+			if (!['http:', 'https:'].includes(origin.protocol) ||
+				(publicUrl ? origin.origin !== new URL(publicUrl).origin : origin.host !== req.headers.host)) return reject(403)
+			const user = await userResolver(req)
+			if (!user) return reject(401)
+			if (!allowed(await rolesResolver(), user)) return reject(403)
+			const conv = url.searchParams.get('conversation_id') || ''
+			if (!/^[A-Za-z0-9_-]{1,64}$/.test(conv)) return reject(400)
+			const target = new URL(`${jarvisUrl}/widget/voice`)
+			target.searchParams.set('conversation_id', conv)
+			const headers = { connection: 'Upgrade', upgrade: 'websocket',
+				'sec-websocket-key': req.headers['sec-websocket-key'], 'sec-websocket-version': req.headers['sec-websocket-version'],
+				authorization: `Bearer ${jarvisToken}`, 'x-jarvis-user': user.email,
+				'x-jarvis-name': encodeURIComponent(user.name), 'x-jarvis-roles': user.roles.join(',') }
+			// Extensions are deliberately omitted: passthrough PCM requires no compression negotiation.
+			upstream = (target.protocol === 'https:' ? httpsRequest : httpRequest)(target, { headers })
+			upstream.setTimeout(5000, cleanup)
+			upstream.on('upgrade', (reply, upstreamSocket, upstreamHead) => {
+				peer = upstreamSocket
+				upstream.setTimeout(0)
+				peer.setTimeout(0)
+				peer.on('error', cleanup)
+				peer.once('close', () => socket.destroy())
+				if (socket.destroyed) return cleanup()
+				const response = ['HTTP/1.1 101 Switching Protocols', 'Upgrade: websocket', 'Connection: Upgrade',
+					`Sec-WebSocket-Accept: ${reply.headers['sec-websocket-accept']}`, '', ''].join('\r\n')
+				socket.write(response)
+				if (upstreamHead.length) socket.write(upstreamHead)
+				if (head.length) peer.write(head)
+				peer.pipe(socket); socket.pipe(peer)
+			})
+			upstream.on('response', (reply) => { reply.resume(); reject(reply.statusCode || 502) })
+			upstream.on('error', () => { if (!socket.destroyed) reject(502) })
+			upstream.end()
+		} catch { reject(502) }
+	}
+}
+
 // ---- static files -----------------------------------------------------------------------------------------------------
 
 function send(res, code, body, headers = {}) {
@@ -241,6 +294,8 @@ const server = createServer(async (req, res) => {
 		if (!res.headersSent) send(res, 500, 'error')
 	}
 })
+
+server.on('upgrade', voiceUpgrade())
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
 	server.listen(PORT, () => console.log(`honey on :${PORT}${ISSUER ? `, sign-in by ${ISSUER}` : ', no sign-in (OIDC_ISSUER unset)'}${JARVIS_URL ? ', Jarvis on' : ''}`))
